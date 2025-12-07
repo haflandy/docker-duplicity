@@ -23,10 +23,7 @@ This option mountes the `/home` folder of the host into the container and makes 
 
 *Important*: The prefix `/bak` is fixed in the backup and restore scripts! You can mount as many folders as you like, but all of them have to build a structure in `/bak/`.
 
-
 ## Standard tasks
-
-
 
 ### Backup
 
@@ -74,9 +71,7 @@ Example of full backup:
     --volume /home:/bak/home \
     geschke/duplicity backup full
 
-
 ### Restore
-
 
 To restore a backup, run the `restore` command:
 
@@ -96,8 +91,6 @@ The environment variables are the same as in the backup step.
 In this example the restored folders `etc` and `home` will be placed into the folder `/srv/restored` on the host.
 If you submit the optional *folder* parameter, the name of the folder will be concatenated to the dedfault restore folder name, so the files are stored into `/bak/restore/<folder>`.
 
-
-
 ### Run any (Duplicity) command
 
 I cannot guarantee that the scripts do fit all your needs. Furthermore, they are not tested under all circumstances and with all protocols which does Duplicity support.
@@ -110,17 +103,16 @@ If you don't want to use the predefined tasks, then you have to dive deeper in t
 
 This command runs *duplicity* with *--help* as parameter, mounts the folders `/etc/` into `/bak/etc/` and `/home/` into `/bak/home/` and don't check more of the environment variables.
 
-
 ## SSH (SCP and SFTP) issues
 
-By connecting a host with `scp` or `sftp` procotol, Duplicity will ask to accept the public key. It is recommended to receive the public key by a secure channel like directly from the admin. Nevertheless, if you accept the request and answer with "yes" to store the public key, the Docker container is built to be "ephemeral", so you can stop and destroy the container or run a new container with minimal setup. That means, that storing the server's public key into the container is a bad idea. 
+By connecting a host with `scp` or `sftp` procotol, Duplicity will ask to accept the public key. It is recommended to receive the public key by a secure channel like directly from the admin. Nevertheless, if you accept the request and answer with "yes" to store the public key, the Docker container is built to be "ephemeral", so you can stop and destroy the container or run a new container with minimal setup. That means, that storing the server's public key into the container is a bad idea.
 
-To solve this, it is possible to mount a pre-generated known_hosts file into the container. The known_hosts file (usually stored in the user's `.ssh/` folder) contains the public keys of SSH servers. 
+To solve this, it is possible to mount a pre-generated known_hosts file into the container. The known_hosts file (usually stored in the user's `.ssh/` folder) contains the public keys of SSH servers.
 For `scp` and `sftp` connections, Duplicity usually makes use of the Python Paramiko library. Unfortunately, Paramiko needs another format of the public keys than most SSH clients offer. But you can generate the necessary format by the following command:
 
      ssh-keyscan -t rsa ftp.backup.host.example.com >> .ssh/known_hosts
 
-This stores the public key into `.ssh/known_hosts`, feel free to use another or an extra file to handle with backup issues. 
+This stores the public key into `.ssh/known_hosts`, feel free to use another or an extra file to handle with backup issues.
 
 At last, you have to make the known_hosts file accessible within the container:
 
@@ -137,17 +129,14 @@ At last, you have to make the known_hosts file accessible within the container:
     --volume /home/user_on_host/.ssh/known_hosts:/root/.ssh/known_hosts \
     geschke/duplicity backup
 
-
 Have a look at the last volume line - the `known_hosts` file is mounted into the container. For sure, you have to change the value of the host's user (here `user_on_host`).  
-
 
 ## See also
 
-  * [duplicity man](http://duplicity.nongnu.org/duplicity.1.html) page
-  * [duplicity back-up how-to - Ubuntu](https://help.ubuntu.com/community/DuplicityBackupHowto)
-  * [How To Use Duplicity with GPG to Securely Automate Backups on Ubuntu | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu)
-  * [Hetzner DokuWiki](https://wiki.hetzner.de/index.php/Hauptseite/en)
-
+* [duplicity man](http://duplicity.nongnu.org/duplicity.1.html) page
+* [duplicity back-up how-to - Ubuntu](https://help.ubuntu.com/community/DuplicityBackupHowto)
+* [How To Use Duplicity with GPG to Securely Automate Backups on Ubuntu | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu)
+* [Hetzner DokuWiki](https://wiki.hetzner.de/index.php/Hauptseite/en)
 
 ## Feedback
 
