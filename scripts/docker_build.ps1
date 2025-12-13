@@ -4,7 +4,7 @@
 $img = "haflandy/docker-duplicity"
 $tag = Get-Date -Format "yyyyMMddHHmm"
 
-& docker buildx build . -t ${img}:$tag
+& docker buildx build --no-cache -t ${img}:$tag .
 & docker push ${img}:$tag
 & docker image tag ${img}:$tag ${img}:latest
 & docker push ${img}:latest
