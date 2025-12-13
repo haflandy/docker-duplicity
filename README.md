@@ -1,14 +1,18 @@
-# geschke/duplicity
+# haflandy/docker-duplicity
 
 This is a docker image to create backups and do restore with the **[duplicity](http://duplicity.nongnu.org/)** backup tool and a minimal backup shell script.
+
+This project is forked from geschke/docker-duplicity and updated to a newer version
+of Ubuntu.
+A blog entry (in German) of the original author can be found in "[Backups mit Duplicity und Docker](https://www.kuerbis.org/2017/07/backups-mit-duplicity-und-docker/)".
 
 ## Usage
 
 To download the container run
 
-    docker pull geschke/duplicity
+    docker pull haflandy/docker-duplicity
 
-It is a general-purpose Duplicity image with simple backup and restore scripts to handle the main tasks. It is based on the "[Backup Script for Duplicity](https://wiki.hetzner.de/index.php/Duplicity_Script/en)", published as part of the Hetzner DokuWiki.
+It is a general-purpose Duplicity image with simple backup and restore scripts to handle the main tasks. It is based on the "[Backup Script for Duplicity](https://community.hetzner.com/tutorials/duplicity-script)", published as part of the Hetzner DokuWiki.
 
 ## Concepts
 
@@ -39,7 +43,7 @@ To create a backup, the image comes with a simple and small shell script with so
     -e "BPREFIX=hostname_or_another_prefix" \
     --volume /etc:/bak/etc \
     --volume /home:/bak/home \
-    geschke/duplicity backup
+    haflandy/docker-duplicity backup
 
 The script relies on some environment variables. If you start this container, the existence of the environment variables is checked, but you are responsible to fill them with senseful content.
 
@@ -69,7 +73,7 @@ Example of full backup:
     -e "BPREFIX=hostname_or_another_prefix" \
     --volume /etc:/bak/etc \
     --volume /home:/bak/home \
-    geschke/duplicity backup full
+    haflandy/docker-duplicity backup full
 
 ### Restore
 
@@ -84,7 +88,7 @@ To restore a backup, run the `restore` command:
     -e "BDIRS=etc home" \
     -e "BPREFIX=hostname_or_another_prefix" \
     --volume /srv/restored:/bak/restore \
-    geschke/duplicity restore <folder>
+    haflandy/docker-duplicity restore <folder>
 
 The environment variables are the same as in the backup step.
 
@@ -99,7 +103,7 @@ If you don't want to use the predefined tasks, then you have to dive deeper in t
     docker run -it --rm --name duprun -e "BCHECKS=false" \
     --volume /etc:/bak/etc \
     --volume /home:/bak/home \
-    geschke/duplicity duplicity --help
+    haflandy/docker-duplicity duplicity --help
 
 This command runs *duplicity* with *--help* as parameter, mounts the folders `/etc/` into `/bak/etc/` and `/home/` into `/bak/home/` and don't check more of the environment variables.
 
@@ -127,7 +131,7 @@ At last, you have to make the known_hosts file accessible within the container:
     --volume /etc:/bak/etc \
     --volume /home:/bak/home \
     --volume /home/user_on_host/.ssh/known_hosts:/root/.ssh/known_hosts \
-    geschke/duplicity backup
+    haflandy/docker-duplicity backup
 
 Have a look at the last volume line - the `known_hosts` file is mounted into the container. For sure, you have to change the value of the host's user (here `user_on_host`).  
 
