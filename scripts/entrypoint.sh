@@ -74,6 +74,12 @@ appBackup () {
   exec /usr/local/bin/backup.sh "$@"
 }
 
+appBackupSftp () {
+  echo "Backup with SFTP..."
+  echo $@
+  shift 1
+  exec /usr/local/bin/backup_sftp.sh "$@"
+}
 
 appRestore () {
   echo "Restore..."
@@ -85,6 +91,7 @@ appRestore () {
 appHelp () {
   echo "Available options:"
   echo " backup          - Start the backup"
+  echo " backup_sftp     - Start the SFTP backup"
   echo " restore         - Start the restore"
   echo " [command]       - Execute the specified linux command eg. bash."
 }
@@ -95,6 +102,9 @@ echo $@
 case ${1} in
   backup)
     appBackup $@
+    ;;
+  backup_sftp)
+    appBackupSftp $@
     ;;
   restore)
     appRestore $@
