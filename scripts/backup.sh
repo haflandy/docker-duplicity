@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Original from https://community.hetzner.com/tutorials/duplicity-script/de
 #
 #
 # Simple script for creating backups with Duplicity.
@@ -23,7 +24,7 @@ DATE=`date +%d`
 # Setting the password for the Backup account that the
 # backup files will be transferred to.
 # for sftp a public key can be used, see:
-# http://wiki.hetzner.de/index.php/Backup
+# https://docs.hetzner.com/de/storage/storage-box/backup-space-ssh-keys/
 
 
 # directories to backup (use . for /)
